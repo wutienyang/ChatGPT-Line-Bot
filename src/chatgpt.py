@@ -8,11 +8,11 @@ class ChatGPT:
         self.memory = memory
 
     def get_response(self, user_id: str, text: str) -> str:
-        self.memory.append(user_id, {'role': 'user', 'content': text})
+        self.memory.append(user_id, {"role": "user", "content": text})
         response = self.model.chat_completion(self.memory.get(user_id))
-        role = response['choices'][0]['message']['role']
-        content = response['choices'][0]['message']['content']
-        self.memory.append(user_id, {'role': role, 'content': content})
+        role = response["choices"][0]["message"]["role"]
+        content = response["choices"][0]["message"]["content"]
+        self.memory.append(user_id, {"role": role, "content": content})
         return content
 
     def clean_history(self, user_id: str) -> None:
@@ -25,3 +25,11 @@ class DALLE:
 
     def generate(self, text: str) -> str:
         return self.model.image_generation(text)
+
+
+class Whisper:
+    def __init__(self, model: ModelInterface):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return self.model.audio_generation(text)
