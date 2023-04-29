@@ -50,10 +50,13 @@ def command(cmd):
 
 def run(event):
     text = event.message.text
-    prompt = command(text)
-    line_bot_api.push_message(line_user_id, TextSendMessage(text=f"prompt : {prompt}"))
+    if text.startswith("/"):
+        prompt = command(text)
+        line_bot_api.push_message(
+            line_user_id, TextSendMessage(text=f"prompt : {prompt}")
+        )
 
-    if text.startswith("/imagine"):
+    elif text.startswith("/imagine"):
         response = dalle.generate(text[8:].strip())
         msg = ImageSendMessage(
             original_content_url=response, preview_image_url=response
